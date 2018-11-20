@@ -1,7 +1,3 @@
-// Для 1602
-#include <Wire.h>
-#include <LiquidCrystal_I2C.h>
-
 // Пины вентиляторов
 #define FAN1_PIN 9
 #define FAN2_PIN 10
@@ -10,13 +6,7 @@
 // Переменная для получения значений с порта
 int ser;
 
-// Подключаем 1602
-LiquidCrystal_I2C lcd(0x3F, 16, 2);
-
 void setup() {
-  // Подключаем 1602
-  lcd.begin();
-
   // Подключаемся к ПК
   Serial.begin(9600);
 
@@ -29,11 +19,7 @@ void setup() {
 void loop() {
   if (Serial.available() > 0) { // Если что-то пришло в порт
     ser = Serial.readString().toInt(); // Считываем число с порта
-
-    lcd.setCursor(0, 0);
-    lcd.clear();
-    lcd.print(ser); // Выводим его на экран
-
+    
     // И управляем вентиляторами
     if (ser < 256) {
       analogWrite(FAN1_PIN, (ser%256));
